@@ -1,2 +1,4 @@
 socketio~=0.2.1
 eventlet~=0.33.3
+flask~=2.0.2
+flask_dance~=4.2.0
