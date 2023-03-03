@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from flask import Flask, render_template, redirect, url_for
 from flask_dance.contrib.google import make_google_blueprint, google
 import logging
+from . import chat_stream
 
 # Load environment variables from .env file
 load_dotenv()
@@ -40,3 +41,16 @@ def index():
 @api.route("/login")
 def login():
     return redirect(url_for("google.login"))
+
+@api.route("/logout")
+def logout():
+    return redirect(url_for("google.logout"))
+
+@api.route("/profile")
+def profile():
+    if not google.authorized:
+        return redirect(url_for("google.login"))
+    resp = google.get("/oauth2/v2/userinfo")
+    assert resp.ok, resp.text
+    return "You are {email} on Google".format(email=resp.json()["email"])
+
