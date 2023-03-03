@@ -54,3 +54,8 @@ def profile():
     assert resp.ok, resp.text
     return "You are {email} on Google".format(email=resp.json()["email"])
 
+# chat
+@api.route("/chat")
+def chat():
+    logging.info("chat")
+    return chat_stream()
