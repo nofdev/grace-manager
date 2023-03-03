@@ -55,19 +55,19 @@ def profile():
     return "You are {email} on Google".format(email=resp.json()["email"])
 
 # chat
-@api.route("/chat")
+@api.route("/chat", methods=["POST"])
 def chat():
     logging.info("chat")
     return chat_stream()
 
 # send message
-@api.route("/send")
+@api.route("/send", methods=["POST"])
 def send():
     logging.info("send")
     return send_message()
 
 # recive message
-@api.route("/recive")
+@api.route("/recive", methods=["POST"])
 def recive():
     logging.info("recive")
     return recive_stream()
