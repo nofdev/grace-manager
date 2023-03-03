@@ -1,8 +1,5 @@
-def chat_stream():
+def send_message(msg):
     pass
 
-def send_message():
-    pass
-
-def recive_stream():
+def recive_stream(msg):
     pass

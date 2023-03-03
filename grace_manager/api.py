@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from flask_dance.contrib.google import make_google_blueprint, google
 import logging
 from . import chat_stream, send_message, recive_stream
@@ -54,20 +54,15 @@ def profile():
     assert resp.ok, resp.text
     return "You are {email} on Google".format(email=resp.json()["email"])
 
-# chat
-@api.route("/chat", methods=["POST"])
+# Send message
+@api.route("/v1/chat/send", methods=["POST"])
 def chat():
     logging.info("chat")
-    return chat_stream()
+    return send_message(request.json)
 
-# send message
-@api.route("/send", methods=["POST"])
-def send():
-    logging.info("send")
-    return send_message()
 
-# recive message
-@api.route("/recive", methods=["POST"])
+# Recive message
+@api.route("/v1/chat/recive", methods=["POST"])
 def recive():
     logging.info("recive")
-    return recive_stream()
+    return recive_stream(request.json)
