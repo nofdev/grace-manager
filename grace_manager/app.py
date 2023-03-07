@@ -50,7 +50,7 @@ def oauth_authorized():
     access_token = response['access_token']
     return 'Access granted!'
 
-@app.route('/v1/chat/send', methods=['POST'])
+@app.route('/v1/chat', methods=['POST'])
 @oauth.require_oauth('google')
 def send_message():
     # Get the message form the request
@@ -66,7 +66,7 @@ def send_message():
 # stream all previous messages to the client by emitting a message event for each message in the message_history list
 message_history = []
 
-@app.route('/v1/chat/receive')
+@app.route('/v1/chat', methods=['GET'])
 @oauth.require_oauth('google')
 def receive_message():
     # Stream all messages to the client
