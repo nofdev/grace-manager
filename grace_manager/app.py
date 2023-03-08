@@ -1,10 +1,13 @@
-import json, os, sqlite3
+import os
+import sqlite3
+import json
+import requests
 from flask import Flask, request, redirect, url_for
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_oauthlib.client import OAuth
 from flask_socketio import SocketIO, emit
-from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from oauthlib.oauth2 import WebApplicationClient
-import requests
+
 from .db import init_db_command
 from .user import User
 
