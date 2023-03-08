@@ -208,4 +208,4 @@ def receive_message():
 
 # run the app
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True, ssl_context='adhoc')
