@@ -1,6 +1,7 @@
 socketio~=0.2.1
 eventlet~=0.33.3
-flask~=2.0.2
-flask_dance~=4.2.0
-flask_socketio~=5.1.2
-flask_oauthlib~=0.9.6
+requests==2.21.0
+Flask==1.0.2
+oauthlib==3.0.1
+pyOpenSSL==19.0.0
+Flask-Login==0.4.1
