@@ -2,10 +2,10 @@ import os
 import sqlite3
 import json
 import requests
+import socketio
 from flask import Flask, request, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from flask_oauthlib.client import OAuth
-from flask_socketio import SocketIO, emit
+from flask_socketio import emit
 from oauthlib.oauth2 import WebApplicationClient
 
 from .db import init_db_command
@@ -42,36 +42,6 @@ client = WebApplicationClient(GOOGLE_CLIENT_ID)
 @login_manager.user_loader
 def load_user(user_id):
     return User.get(user_id)
-
-
-# Secret key for session management
-app.config['SECRET_KEY'] = 'secret!'
-
-# OAuth credentials
-app.config['OAUTH_CREDENTIALS'] = {
-    'google': {
-        'id': 'client_id',
-        'secret': 'client_secret'
-    }
-}
-
-# Initialize the extensions
-oauth = OAuth(app)
-socketio = SocketIO(app)
-
-google = oauth.remote_app(
-    'google',
-    consumer_key='google-client-id',
-    consumer_secret='google-client-secret',
-    request_token_params={
-        'scope': 'email'
-    },
-    base_url='https://www.googleapis.com/oauth2/v1/',
-    request_token_url=None,
-    access_token_method='POST',
-    access_token_url='https://accounts.google.com/o/oauth2/token',
-    authorize_url='https://accounts.google.com/o/oauth2/auth'
-)
 
 
 @app.route('/')
@@ -179,7 +149,7 @@ def logout():
 
 
 @app.route('/v1/chat', methods=['POST'])
-@oauth.require_oauth('google')
+@login_required()
 def send_message():
     # Get the message form the request
     # message = request.json['message']
@@ -197,7 +167,7 @@ message_history = []
 
 
 @app.route('/v1/chat', methods=['GET'])
-@oauth.require_oauth('google')
+@login_required
 def receive_message():
     # Stream all messages to the client
     @socketio.on('connect')
@@ -210,5 +180,5 @@ def receive_message():
 
 
 # run the app
-if __name__ == '__main__':
-    socketio.run(app, debug=True, ssl_context='adhoc')
+if __name__ == "__main__":
+    app.run(debug=True)
