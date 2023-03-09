@@ -1,5 +1,5 @@
 from flask_login import UserMixin
-from .db import get_db
+from db import get_db
 
 
 # The User class has methods to get an existing user from the database and create a new user

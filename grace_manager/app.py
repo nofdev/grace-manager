@@ -8,8 +8,8 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from flask_socketio import emit
 from oauthlib.oauth2 import WebApplicationClient
 
-from .db import init_db_command
-from .user import User
+from db import init_db_command
+from user import User
 
 # configuration
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', None)
