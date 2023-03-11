@@ -25,6 +25,7 @@ blueprint = make_google_blueprint(
 )
 api.register_blueprint(blueprint, url_prefix="/login")
 
+
 # Routes
 @api.route("/")
 def index():
@@ -38,13 +39,16 @@ def index():
     assert resp.ok, resp.text
     return "You are {email} on Google".format(email=resp.json()["email"])
 
+
 @api.route("/login")
 def login():
     return redirect(url_for("google.login"))
 
+
 @api.route("/logout")
 def logout():
     return redirect(url_for("google.logout"))
+
 
 @api.route("/profile")
 def profile():
@@ -53,6 +57,7 @@ def profile():
     resp = google.get("/oauth2/v2/userinfo")
     assert resp.ok, resp.text
     return "You are {email} on Google".format(email=resp.json()["email"])
+
 
 # Send message
 @api.route("/v1/chat/send", methods=["POST"])
