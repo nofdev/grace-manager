@@ -25,7 +25,7 @@ function sendMessage() {
       console.log(this.responseText);
     }
   };
-  xhttp.open('POST', 'http://localhost/send', true);
+  xhttp.open('POST', 'http://localhost:8080/send', true);
   xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   xhttp.send('message=' + message);
 }
@@ -50,7 +50,7 @@ function receiveMessages() {
       messageContainer.scrollTop = messageContainer.scrollHeight;
     }
   };
-  xhttp.open('GET', 'http://localhost/receive', true);
+  xhttp.open('GET', 'http://localhost:8080/receive', true);
   xhttp.send();
 }
 
