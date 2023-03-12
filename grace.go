@@ -27,6 +27,24 @@ func sendMessage(c *gin.Context) {
 	c.JSON(http.StatusOK, newChat)
 }
 
+// sendMessageByID locates the chat message whose ID value matches the id
+// parameter sent by the client, then updates the message field of that chat message.
+func sendMessageByID(c *gin.Context) {
+	id := c.Param("id")
+	var updateChat chat
+	if err := c.BindJSON(&updateChat); err != nil {
+		return
+	}
+	for i, a := range chats {
+		if a.Id == id {
+			chats[i].Message = updateChat.Message
+			c.JSON(http.StatusOK, chats[i])
+			return
+		}
+	}
+	c.JSON(http.StatusNotFound, gin.H{"message": "chat not found"})
+}
+
 // recieveMessage is a handler function which returns all chat messages
 func recieveMessage(c *gin.Context) {
 	c.JSON(http.StatusOK, chats)
@@ -51,6 +69,7 @@ func recieveMessageByID(c *gin.Context) {
 func main() {
 	router := gin.Default()
 	router.POST("/send", sendMessage)
+	router.PUT("/send/:id", sendMessageByID)
 	router.GET("/recieve", recieveMessage)
 	router.GET("/recieve/:id", recieveMessageByID)
 	router.Run(":8080")
