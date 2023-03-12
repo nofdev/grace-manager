@@ -18,6 +18,16 @@ function sendMessage() {
 
   inputField.value = '';
   messageContainer.scrollTop = messageContainer.scrollHeight;
+
+  const xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      console.log(this.responseText);
+    }
+  };
+  xhttp.open('POST', 'http://localhost/send', true);
+  xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhttp.send('message=' + message);
 }
 
 inputField.addEventListener('keypress', (e) => {
@@ -25,3 +35,23 @@ inputField.addEventListener('keypress', (e) => {
     sendMessage();
   }
 });
+
+function receiveMessages() {
+  const xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      const messages = JSON.parse(this.responseText);
+      for (let i = 0; i < messages.length; i++) {
+        const messageElement = document.createElement('p');
+        messageElement.textContent = messages[i];
+
+        messageContainer.appendChild(messageElement);
+      }
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+  };
+  xhttp.open('GET', 'http://localhost/receive', true);
+  xhttp.send();
+}
+
+setInterval(receiveMessages, 1000);
