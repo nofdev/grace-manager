@@ -26,12 +26,12 @@ func TestSendMessage(t *testing.T) {
 	assert.Equal(t, `{"id":"1","user":"John","message":"Hello"}`, w.Body.String())
 }
 
-// TestRecieveMessage tests the recieveMessage function
-func TestRecieveMessage(t *testing.T) {
+// TestReceiveMessage tests the receiveMessage function
+func TestReceiveMessage(t *testing.T) {
 	// Setup
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	r.GET("/chat", recieveMessage)
+	r.GET("/chat", receiveMessage)
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/chat", nil)
 
