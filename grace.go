@@ -70,7 +70,7 @@ func main() {
 	router := gin.Default()
 	router.POST("/send", sendMessage)
 	router.PUT("/send/:id", sendMessageByID)
-	router.GET("/recieve", receiveMessage)
-	router.GET("/recieve/:id", receiveMessageByID)
+	router.GET("/receive", receiveMessage)
+	router.GET("/receive/:id", receiveMessageByID)
 	router.Run(":8080")
 }
