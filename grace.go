@@ -68,14 +68,19 @@ func receiveMessageByID(c *gin.Context) {
 // main function to boot up everything
 func main() {
 	router := gin.Default()
-	router.POST("/send", sendMessage)
-	router.PUT("/send/:id", sendMessageByID)
-	router.GET("/receive", receiveMessage)
-	router.GET("/receive/:id", receiveMessageByID)
-	err := router.Run(":8080")
 
 	// Serve frontend static files
-	router.Static("/", "./frontend")
+	router.Static("/chat", "./frontend")
+
+	// API group routes for versioning and future expansion of API endpoints
+	g := router.Group("/v1")
+	// Serve API endpoints
+	g.PUT("/send/:id", sendMessageByID)
+	g.POST("/send", sendMessage)
+	g.GET("/receive/:id", receiveMessageByID)
+	g.GET("/receive", receiveMessage)
+
+	err := router.Run(":8080")
 
 	if err != nil {
 		return
