@@ -73,6 +73,10 @@ func main() {
 	router.GET("/receive", receiveMessage)
 	router.GET("/receive/:id", receiveMessageByID)
 	err := router.Run(":8080")
+
+	// Serve frontend static files
+	router.Static("/", "./frontend")
+
 	if err != nil {
 		return
 	}
