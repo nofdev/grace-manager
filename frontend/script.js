@@ -1,57 +1,53 @@
-const messageContainer = document.querySelector('.messages');
-const inputField = document.querySelector('.input input');
-const sendButton = document.querySelector('.input button');
+const messageContainer = $('.messages');
+const inputField = $('.input input');
+const sendButton = $('.input button');
 
-sendButton.addEventListener('click', (e) => {
+sendButton.on('click', (e) => {
   e.preventDefault();
   sendMessage();
 });
 
 function sendMessage() {
-  const message = inputField.value.trim();
+  const message = inputField.val().trim();
   if (message === '') return;
 
-  const messageElement = document.createElement('p');
-  messageElement.textContent = message;
+  const messageElement = $('<p>').text(message);
 
-  messageContainer.appendChild(messageElement);
+  messageContainer.append(messageElement);
 
-  inputField.value = '';
-  messageContainer.scrollTop = messageContainer.scrollHeight;
+  inputField.val('');
+  messageContainer.scrollTop(messageContainer.prop('scrollHeight'));
 
-  const xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      console.log(this.responseText);
+  $.ajax({
+    url: '/send',
+    type: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({ message: message }),
+    success: function(response) {
+      console.log(response);
     }
-  };
-  xhttp.open('POST', 'http://localhost:8080/send', true);
-  xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  xhttp.send('message=' + message);
+  });
 }
 
-inputField.addEventListener('keypress', (e) => {
+inputField.on('keypress', (e) => {
   if (e.key === 'Enter') {
     sendMessage();
   }
 });
 
 function receiveMessages() {
-  const xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      const messages = JSON.parse(this.responseText);
-      for (let i = 0; i < messages.length; i++) {
-        const messageElement = document.createElement('p');
-        messageElement.textContent = messages[i];
-
-        messageContainer.appendChild(messageElement);
-      }
-      messageContainer.scrollTop = messageContainer.scrollHeight;
+  $.ajax({
+    url: '/receive',
+    type: 'GET',
+    contentType: 'application/json',
+    success: function(messages) {
+      messages.forEach(function(message) {
+        const messageElement = $('<p>').text(message.message);
+        messageContainer.append(messageElement);
+      });
+      messageContainer.scrollTop(messageContainer.prop('scrollHeight'));
     }
-  };
-  xhttp.open('GET', 'http://localhost:8080/receive', true);
-  xhttp.send();
+  });
 }
 
 setInterval(receiveMessages, 1000);
