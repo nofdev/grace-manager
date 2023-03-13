@@ -7,8 +7,8 @@ import (
 )
 
 type chat struct {
-	Id string `json:"id"`
-	User string `json:"user"`
+	Id      string `json:"id"`
+	User    string `json:"user"`
 	Message string `json:"message"`
 }
 
@@ -45,14 +45,14 @@ func sendMessageByID(c *gin.Context) {
 	c.JSON(http.StatusNotFound, gin.H{"message": "chat not found"})
 }
 
-// recieveMessage is a handler function which returns all chat messages
-func recieveMessage(c *gin.Context) {
+// receiveMessage is a handler function which returns all chat messages
+func receiveMessage(c *gin.Context) {
 	c.JSON(http.StatusOK, chats)
 }
 
-// recieveMessage by ID locates the chat message whose ID value matches the id
+// receiveMessageByID locates the chat message whose ID value matches the id
 // parameter sent by the client, then returns that chat message as a response.
-func recieveMessageByID(c *gin.Context) {
+func receiveMessageByID(c *gin.Context) {
 	id := c.Param("id")
 
 	// Loop over the list of chats, looking for a chat whose ID value matches the parameter.
@@ -70,7 +70,7 @@ func main() {
 	router := gin.Default()
 	router.POST("/send", sendMessage)
 	router.PUT("/send/:id", sendMessageByID)
-	router.GET("/recieve", recieveMessage)
-	router.GET("/recieve/:id", recieveMessageByID)
+	router.GET("/recieve", receiveMessage)
+	router.GET("/recieve/:id", receiveMessageByID)
 	router.Run(":8080")
 }
