@@ -72,5 +72,8 @@ func main() {
 	router.PUT("/send/:id", sendMessageByID)
 	router.GET("/receive", receiveMessage)
 	router.GET("/receive/:id", receiveMessageByID)
-	router.Run(":8080")
+	err := router.Run(":8080")
+	if err != nil {
+		return
+	}
 }
