@@ -74,11 +74,10 @@ func main() {
 
 	// API group routes for versioning and future expansion of API endpoints
 	g := router.Group("/v1")
-	// Serve API endpoints
-	g.PUT("/send/:id", sendMessageByID)
 	g.POST("/send", sendMessage)
-	g.GET("/receive/:id", receiveMessageByID)
+	g.PUT("/send/:id", sendMessageByID)
 	g.GET("/receive", receiveMessage)
+	g.GET("/receive/:id", receiveMessageByID)
 
 	err := router.Run(":8080")
 
