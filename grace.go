@@ -13,6 +13,7 @@ type chat struct {
 }
 
 // chats is a slice of chat struct to store all the chat messages
+// TODO: Replace this with a database
 var chats = []chat{
 	{Id: "", User: "", Message: ""},
 }
