@@ -73,11 +73,11 @@ func main() {
 	router.Static("/chat", "./frontend")
 
 	// API group routes for versioning and future expansion of API endpoints
-	g := router.Group("/v1")
-	g.POST("/send", sendMessage)
-	g.PUT("/send/:id", sendMessageByID)
-	g.GET("/receive", receiveMessage)
-	g.GET("/receive/:id", receiveMessageByID)
+	v1 := router.Group("/v1")
+	v1.POST("/send", sendMessage)
+	v1.PUT("/send/:id", sendMessageByID)
+	v1.GET("/receive", receiveMessage)
+	v1.GET("/receive/:id", receiveMessageByID)
 
 	err := router.Run(":8080")
 
