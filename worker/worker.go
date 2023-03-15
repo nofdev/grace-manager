@@ -1,3 +1,4 @@
+// Package worker primary to do the worker interactive with manager throw the socket.io
 package worker
 
 type Worker struct {
