@@ -1,6 +1,8 @@
 package main
 
 import (
+	socketio "github.com/googollee/go-socket.io"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -27,6 +29,27 @@ func sendMessage(c *gin.Context) {
 	}
 	chats = append(chats, newChat)
 	c.JSON(http.StatusOK, newChat)
+}
+
+var socketClient socketio.Client
+
+// sendMessageWithSocketIO is a handler function which creates a new chat message
+func sendMessageWithSocketIO(c *gin.Context) {
+	var newChat chat
+	if err := c.BindJSON(&newChat); err != nil {
+		return
+	}
+	chats = append(chats, newChat)
+	c.JSON(http.StatusOK, newChat)
+
+	// Emit the message to the socket.io server
+	if socketClient == nil {
+		var err error
+		socketClient, err = socketio.Dial("http://localhost:8000/socket.io/", nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 }
 
 // sendMessageByID locates the chat message whose ID value matches the id
