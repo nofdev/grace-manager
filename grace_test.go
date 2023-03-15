@@ -15,10 +15,10 @@ func TestSendMessage(t *testing.T) {
 	// Setup
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	r.POST("/chat", sendMessage)
+	r.POST("/send", sendMessage)
 	w := httptest.NewRecorder()
 	body := strings.NewReader(`{"id":"1", "user":"John", "message":"Hello"}`)
-	req, _ := http.NewRequest("POST", "/chat", body)
+	req, _ := http.NewRequest("POST", "/send", body)
 
 	// Assertions
 	r.ServeHTTP(w, req)
@@ -31,9 +31,9 @@ func TestReceiveMessage(t *testing.T) {
 	// Setup
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	r.GET("/chat", receiveMessage)
+	r.GET("/receive", receiveMessage)
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/chat", nil)
+	req, _ := http.NewRequest("GET", "/receive", nil)
 
 	// Assertions
 	r.ServeHTTP(w, req)
