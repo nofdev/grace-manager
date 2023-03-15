@@ -74,6 +74,7 @@ func main() {
 	router.Static("/chat", "./frontend")
 
 	// API group routes for versioning and future expansion of API endpoints
+	// TODO: Add authentication middleware and OAuth2
 	v1 := router.Group("/v1")
 	v1.POST("/send", sendMessage)
 	v1.PUT("/send/:id", sendMessageByID)
