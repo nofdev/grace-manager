@@ -10,9 +10,6 @@ import (
 func Server() {
 	// Create a new server instance
 	server := socketio.NewServer(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	// When client connected, print the message
 	server.OnConnect("/", func(s socketio.Conn) error {
