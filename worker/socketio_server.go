@@ -9,7 +9,7 @@ import (
 
 func Server() {
 	// Create a new server instance
-	server, err := socketio.NewServer(nil)
+	server := socketio.NewServer(nil)
 	if err != nil {
 		log.Fatal(err)
 	}
