@@ -1,42 +1,47 @@
 package main
 
 import (
-	"log"
-	"net/http"
-
+	"fmt"
 	"github.com/gin-gonic/gin"
 	socketio "github.com/googollee/go-socket.io"
 )
 
 func main() {
-	// create a new gin router
-	r := gin.Default()
+	// Create gin router
+	router := gin.Default()
 
-	// create a new socket.io server
+	// Static file server and set index.html as default file
+	router.StaticFile("/", "./frontend/index.html")
+	router.Static("/static", "./frontend")
+
+	// Create socket.io server
 	server := socketio.NewServer(nil)
 
-	// define socket.io events
+	// Handle socket connection event
 	server.OnConnect("/", func(s socketio.Conn) error {
-		log.Println("client connected:", s.ID())
-		s.Join("chat")
+		fmt.Println("new connection")
+		// Handle socket custom event
+		server.OnEvent("/", "event", func(s socketio.Conn, msg string) {
+			fmt.Println("event:", msg)
+			// Broadcast to all clients
+			server.BroadcastToNamespace("/", "event", msg)
+		})
+
+		// Handle socket disconnect event
+		server.OnDisconnect("/", func(s socketio.Conn, reason string) {
+			fmt.Println("disconnected:", reason)
+		})
 		return nil
 	})
 
-	server.OnEvent("/", "chat message", func(s socketio.Conn, msg string) {
-		log.Println("chat message:", msg)
-		server.BroadcastToRoom("/", "chat", "chat message", msg)
-	})
+	// Wrap socket.io server with gin
+	router.GET("/socket.io/*any", gin.WrapH(server))
+	router.POST("/socket.io/*any", gin.WrapH(server))
 
-	server.OnDisconnect("/", func(s socketio.Conn, reason string) {
-		log.Println("client disconnected:", s.ID())
-	})
-
-	// register socket.io server on the gin router
-	r.GET("/socket.io/*any", gin.WrapH(server))
-	r.POST("/socket.io/*any", gin.WrapH(server))
-
-	// start the gin server
-	if err := http.ListenAndServe(":8080", r); err != nil {
-		log.Fatal(err)
+	// Start gin server
+	err := router.Run(":3000")
+	if err != nil {
+		return
 	}
+
 }
