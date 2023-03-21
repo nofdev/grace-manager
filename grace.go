@@ -12,7 +12,6 @@ func main() {
 
 	// Static file server and set index.html as default file
 	router.StaticFile("/", "./frontend/index.html")
-	router.Static("/static", "./frontend")
 
 	// Create socket.io server
 	server := socketio.NewServer(nil)
