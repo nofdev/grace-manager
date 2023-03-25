@@ -1,53 +1,58 @@
-const messageContainer = $('.messages');
-const inputField = $('.input input');
-const sendButton = $('.input button');
+const messageContainer = document.querySelector('.messages');
+const inputField = document.querySelector('.input input');
+const sendButton = document.querySelector('.input button');
 
-sendButton.on('click', (e) => {
+sendButton.addEventListener('click', (e) => {
   e.preventDefault();
   sendMessage();
 });
 
 function sendMessage() {
-  const message = inputField.val().trim();
+  const message = inputField.value.trim();
   if (message === '') return;
 
-  const messageElement = $('<p>').text(message);
+  const messageElement = document.createElement('p');
+  messageElement.textContent = message;
+  messageContainer.appendChild(messageElement);
 
-  messageContainer.append(messageElement);
+  inputField.value = '';
+  messageContainer.scrollTop = messageContainer.scrollHeight;
 
-  inputField.val('');
-  messageContainer.scrollTop(messageContainer.prop('scrollHeight'));
-
-  $.ajax({
-    url: '/send',
-    type: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify({ message: message }),
-    success: function(response) {
-      console.log(response);
-    }
-  });
+  fetch('/send', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ message: message })
+  })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error(error));
 }
 
-inputField.on('keypress', (e) => {
+inputField.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') {
     sendMessage();
   }
 });
 
 function receiveMessages() {
-  $.ajax({
-    url: '/receive',
-    type: 'GET',
-    contentType: 'application/json',
-    success: function(messages) {
-      messages.forEach(function(message) {
-        const messageElement = $('<p>').text(message.message);
-        messageContainer.append(messageElement);
-      });
-      messageContainer.scrollTop(messageContainer.prop('scrollHeight'));
+  fetch('/receive', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
     }
-  });
+  })
+      .then(response => response.json())
+      .then(messages => {
+        messages.forEach(function(message) {
+          const messageElement = document.createElement('p');
+          messageElement.textContent = message.message;
+          messageContainer.appendChild(messageElement);
+        });
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+      })
+      .catch(error => console.error(error));
 }
 
 setInterval(receiveMessages, 1000);
