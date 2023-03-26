@@ -2,12 +2,6 @@ body {
   font-family: sans-serif;
 }
 
-h1 {
-  margin: 0;
-  padding: 20px;
-  background-color: #eee;
-}
-
 .chat-container {
     max-width: 500px;
     margin: 0 auto;
@@ -86,8 +80,10 @@ nav a:hover {
   color: black;
 }
 
-footer nav {
+.footer {
   background-color: #333;
   overflow: hidden;
-  align-self: auto;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
