@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<!-- bootstrap -->
+<!-- Bootstrap -->
 <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
@@ -26,7 +26,7 @@
         integrity="sha384-heAjqF+bCxXpCWLa6Zhcp4fu20XoNIA98ecBC1YkdXhszjoejr5y9Q77hIrv8R9i"
         crossorigin="anonymous"></script>
 
-<!-- nav bar -->
+<!-- Nav bar -->
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Navbar</a>
@@ -68,9 +68,15 @@
     </div>
 </nav>
 
-<!-- chat -->
+<!-- Chat output-->
+<div class="chat-title"><h1>Chat demo</h1></div>
+<div class="chat-messages" id="messages">
+    <p id="output">The output message</p>
+</div>
+
+
+<!-- Chat input-->
 <div class="chat-container">
-    <h1>Chat demo</h1>
     <div class="input-group mb-3">
         <input type="text" class="form-control" id="input" placeholder="Input your messages"
                aria-label="Recipient's username" aria-describedby="button-addon2">
@@ -79,7 +85,7 @@
 </div>
 
 
-<!-- footer -->
+<!-- Footer -->
 <footer>
     <div class="footer">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">

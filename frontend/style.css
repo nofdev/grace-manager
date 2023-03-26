@@ -10,6 +10,22 @@ body {
     text-align: center;
 }
 
+.chat-title {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.chat-messages {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
 .header {
     text-align: center;
 }
