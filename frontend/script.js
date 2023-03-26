@@ -1,3 +1,5 @@
+// This file is used to send and receive messages from the server by using the fetch API.
+
 const messageContainer = document.querySelector('.messages');
 const inputField = document.querySelector('.input input');
 const sendButton = document.querySelector('.input button');

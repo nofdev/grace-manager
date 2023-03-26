@@ -1,3 +1,5 @@
+// This file is used to send and receive messages from the server by using socket.io.
+
 // Connect to socket.io server
 const socket = io.connect("http://localhost:3000");
 
