@@ -18,12 +18,13 @@ body {
     text-align: center;
 }
 
-.chat-messages #output{
+.chat-messages #output {
     max-width: 500px;
     margin: 0 auto;
     padding: 20px;
     box-sizing: border-box;
-    text-align: center;
+    text-align: left;
+    white-space: pre-wrap;
 }
 
 .header {
