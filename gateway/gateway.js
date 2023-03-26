@@ -21,6 +21,19 @@ app.get('/endpoint', (req, res) => {
     }
 });
 
+app.post('/endpoint', (req, res) => {
+    try {
+        // Call the library function to process the request
+        const result = library.processRequest(req.body);
+
+        // Send the result back to the client
+        res.json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+})
+
 // OAuth 2.0
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
