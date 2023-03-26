@@ -18,7 +18,7 @@ body {
     text-align: center;
 }
 
-.chat-messages {
+.chat-messages #output{
     max-width: 500px;
     margin: 0 auto;
     padding: 20px;
@@ -28,19 +28,6 @@ body {
 
 .header {
     text-align: center;
-}
-
-.messages {
-    height: 300px;
-    overflow-y: scroll;
-    margin-bottom: 10px;
-}
-
-.messages p {
-    background-color: #eee;
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 5px;
 }
 
 .input input {
