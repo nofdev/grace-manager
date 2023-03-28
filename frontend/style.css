@@ -2,7 +2,7 @@ body {
     font-family: sans-serif;
 }
 
-.chat-container {
+.chat-input {
     max-width: 500px;
     margin: 0 auto;
     padding: 20px;
@@ -18,7 +18,7 @@ body {
     text-align: center;
 }
 
-.chat-messages #message {
+.chat-messages #result {
     max-width: 500px;
     margin: 0 auto;
     padding: 20px;
@@ -84,11 +84,13 @@ nav a:hover {
     color: black;
 }
 
-.footer {
-    background-color: #333;
+.footer-container {
     overflow: hidden;
-    position: absolute;
-    bottom: 0;
+    position: relative;
     width: 100%;
     font-size: smaller;
+}
+
+.user-message {
+    color: #006F8E;
 }

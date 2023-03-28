@@ -57,8 +57,9 @@
 <div class="chat-title"><h1>Chat demo</h1></div>
 <div class="chat-messages" id="result"></div>
 
+
 <!-- Chat input-->
-<div class="chat-container">
+<div class="chat-input">
     <div class="input-group mb-3">
         <input type="text" class="form-control" id="input" placeholder="Input your messages"
                aria-label="Recipient's username" aria-describedby="button-addon2">
@@ -68,35 +69,18 @@
 <script src="chat.js"></script>
 
 <!-- Footer -->
-<footer>
-    <div class="footer">
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Navbar w/ text</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-                        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarText">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Contact</a>
-                        </li>
-                    </ul>
-                    <span class="navbar-text">
-        &copy; 2023 JB Technology
-      </span>
-                </div>
-            </div>
-        </nav>
-    </div>
-</footer>
+<div class="footer-container">
+    <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+        </ul>
+        <p class="text-center text-muted">© 2023 JB Technology, Inc</p>
+    </footer>
+</div>
 
 <!-- Bootstrap -->
 <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
