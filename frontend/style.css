@@ -100,3 +100,8 @@ nav a:hover {
     justify-content: flex-end;
     align-items: flex-end;
 }
+
+pre {
+    white-space: pre-wrap;
+    word-break: break-all;
+}
