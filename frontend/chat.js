@@ -20,15 +20,19 @@ function sendMessage() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer `
+                'Authorization': `Bearer sk-`
             },
             body: JSON.stringify(requestBody)
         }
     )
         .then(response => response.json())
         .then(result => {
+            if (!result) {
+                throw new Error('Invalid response format')
+            }
             const resultElement = document.createElement('p');
-            resultElement.textContent = result.message;
+            resultElement.textContent = result.choices[0].message.content;
+
             resultDiv.appendChild(resultElement);
         })
         .catch(error => console.error(error));
