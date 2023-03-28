@@ -10,6 +10,9 @@ input.focus();
 loading.style.display = "none";
 
 function sendMessage() {
+    // if input.value is empty, return
+    if (input.value === '') return;
+
     // When user click send button, loading display and send button hide
     loading.style.display = "block";
     sendBtn.style.display = "none";
