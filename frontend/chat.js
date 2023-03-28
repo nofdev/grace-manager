@@ -8,8 +8,23 @@ function sendMessage() {
     const messageElement = document.createElement('p');
     messageElement.textContent = message;
 
+    const requestBody = {
+        model: 'gpt-3.5-turbo',
+        messages: [{role: 'user', content: message}],
+    }
+
     // Send HTTP GET request to API endpoint, and print result in response
-    fetch(`/api/sendMessage?message=${message}`)
+    // Send to Gateway API DO NOT Sent to OpenAI API, Only Dev environment
+    fetch(`https://api.openai.com/v1/chat/completions`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer `
+            },
+            body: JSON.stringify(requestBody)
+        }
+    )
         .then(response => response.json())
         .then(result => {
             const resultElement = document.createElement('p');
