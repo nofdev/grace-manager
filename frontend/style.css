@@ -99,6 +99,7 @@ nav a:hover {
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
+    margin-left: auto;
 }
 
 pre {
