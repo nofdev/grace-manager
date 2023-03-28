@@ -95,3 +95,8 @@ nav a:hover {
     margin-left: 10px;
 }
 
+#send {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}

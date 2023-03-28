@@ -46,7 +46,7 @@ function sendMessage() {
             if (!result) {
                 throw new Error('Invalid response format')
             }
-            const resultElement = document.createElement('p');
+            const resultElement = document.createElement('pre');
             resultElement.textContent = result.choices[0].message.content;
 
             resultDiv.appendChild(resultElement);
@@ -69,9 +69,23 @@ function sendMessage() {
 // When user click send button, call sendMessage function
 sendBtn.addEventListener('click', sendMessage);
 
-// When user press enter key, call sendMessage function
-input.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
+
+// When user press Enter key, call sendMessage function, and new line function is disable
+// When user press Enter key and Shift key, new line function is enable
+const textarea = document.getElementById('input');
+textarea.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        // If press Enter and not Shift, submit form
+        event.preventDefault(); // Disable default submit event
+        // Submit logic
         sendMessage();
+    } else if (event.key === 'Enter' && event.shiftKey) {
+        // If press Enter and Shift, new line
+        event.preventDefault(); // Disable default new line event
+        const startPos = this.selectionStart;
+        const endPos = this.selectionEnd;
+        const value = this.value;
+        this.value = value.substring(0, startPos) + '\n' + value.substring(endPos, value.length);
+        this.selectionStart = this.selectionEnd = startPos + 1;
     }
 })
