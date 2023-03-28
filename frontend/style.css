@@ -92,7 +92,11 @@ nav a:hover {
 }
 
 #loading {
-    margin-left: 10px;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: left;
 }
 
 #send {
@@ -105,4 +109,17 @@ nav a:hover {
 pre {
     white-space: pre-wrap;
     word-break: break-all;
+    margin-left: auto;
+}
+
+p {
+    margin-left: auto;
+}
+
+.chat-messages {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: left;
 }
