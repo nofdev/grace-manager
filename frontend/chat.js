@@ -2,6 +2,9 @@ const input = document.getElementById('input');
 const sendBtn = document.getElementById('send');
 const resultDiv = document.getElementById('result');
 
+// User input focus
+input.focus();
+
 function sendMessage() {
     const message = input.value;
 
