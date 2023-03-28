@@ -18,7 +18,7 @@ body {
     text-align: center;
 }
 
-.chat-messages #output {
+.chat-messages #message {
     max-width: 500px;
     margin: 0 auto;
     padding: 20px;
