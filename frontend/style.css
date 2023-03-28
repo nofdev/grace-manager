@@ -91,6 +91,7 @@ nav a:hover {
     font-size: smaller;
 }
 
-.user-message {
-    color: #006F8E;
+#loading {
+    margin-left: 10px;
 }
+

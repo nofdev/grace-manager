@@ -1,23 +1,31 @@
 const input = document.getElementById('input');
 const sendBtn = document.getElementById('send');
 const resultDiv = document.getElementById('result');
+const loading = document.getElementById('loading');
 
 // User input focus
 input.focus();
 
+// Initial loading do not display
+loading.style.display = "none";
+
 function sendMessage() {
+    // When user click send button, loading display and send button hide
+    loading.style.display = "block";
+    sendBtn.style.display = "none";
+    input.style.display = "none";
+
+    // The user message of user input
     const message = input.value;
 
-    // const messageElement = document.createElement('p');
-    // messageElement.textContent = message;
-
+    // OpenAI Chat API request body
     const requestBody = {
         model: 'gpt-3.5-turbo',
         messages: [{role: 'user', content: message}],
     }
 
     // Control input message to display
-    const resultElement = document.createElement('p');
+    const resultElement = document.createElement('h5');
     resultElement.textContent = message
     resultDiv.appendChild(resultElement);
 
@@ -44,13 +52,24 @@ function sendMessage() {
             resultDiv.appendChild(resultElement);
             resultDiv.appendChild(document.createElement('br'));
         })
-        .catch(error => console.error(error));
+        .catch(error => console.error(error))
+        .finally(() => {
+            loading.style.display = "none";
+            sendBtn.style.display = "block";
+            input.style.display = "block";
+            input.focus();
+        });
 
+    // Clear user input
     input.value = '';
+
 }
 
+
+// When user click send button, call sendMessage function
 sendBtn.addEventListener('click', sendMessage);
 
+// When user press enter key, call sendMessage function
 input.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         sendMessage();
