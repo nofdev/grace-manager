@@ -123,3 +123,9 @@ p {
     box-sizing: border-box;
     text-align: left;
 }
+
+#input-message {
+    font-size: larger;
+    font-weight: bold;
+    color: var(--bs-success-text-emphasis);
+}

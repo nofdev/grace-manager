@@ -28,9 +28,10 @@ function sendMessage() {
     }
 
     // Control input message to display
-    const resultElement = document.createElement('h5');
-    resultElement.textContent = message
-    resultDiv.appendChild(resultElement);
+    const inputElement = document.createElement('pre');
+    inputElement.id = "input-message"
+    inputElement.textContent = message
+    resultDiv.appendChild(inputElement);
 
     // Send HTTP GET request to API endpoint, and print result in response
     // Send to Gateway API DO NOT Sent to OpenAI API, Only Dev environment
