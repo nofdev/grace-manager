@@ -127,5 +127,4 @@ p {
 #input-message {
     font-size: larger;
     font-weight: bold;
-    color: var(--bs-success-text-emphasis);
 }
