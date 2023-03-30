@@ -7,6 +7,8 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 
+import {SK} from './key.js';
+
 app.use(cors());
 app.use(express.json());
 
@@ -42,7 +44,7 @@ app.post('/chat', async (req, res) => {
         }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer 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` // replace with your API key
+                'Authorization': SK // API key
             }
         });
 
