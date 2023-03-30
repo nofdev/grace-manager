@@ -1,32 +1,35 @@
-const input = document.getElementById('input');
+const userIpt = document.getElementById('input');
 const sendBtn = document.getElementById('send');
 const resultDiv = document.getElementById('result');
-const loading = document.getElementById('loading');
+const loadingBdr = document.getElementById('loading');
+// import key for testing purpose only (not for production)
+import {SK} from './key.js';
 
 // User input focus
-input.focus();
+userIpt.focus();
 
 // Initial loading do not display
-loading.style.display = "none";
+loadingBdr.style.display = "none";
+
+// OpenAI Chat API request body
+let requestBody = {
+    model: 'gpt-3.5-turbo',
+    messages: [],
+    temperature: 0.8,
+}
 
 function sendMessage() {
     // if input.value is empty, return
-    if (input.value === '') return;
+    if (userIpt.value === '') return;
 
     // When user click send button, loading display and send button hide
-    loading.style.display = "block";
+    loadingBdr.style.display = "block";
     sendBtn.style.display = "none";
-    input.style.display = "none";
+    userIpt.style.display = "none";
 
     // The user message of user input
-    let userMessage = input.value;
+    let userMessage = userIpt.value;
 
-//OpenAI Chat API request body
-    let requestBody = {
-        model: 'gpt-3.5-turbo',
-        messages: [{role: 'user', content: userMessage}],
-        temperature: 0.8,
-    }
 
     // Control input message to display
     const inputElement = document.createElement('pre');
@@ -34,12 +37,21 @@ function sendMessage() {
     inputElement.textContent = userMessage
     resultDiv.appendChild(inputElement);
 
+    // Max length is 6, when 6 reached shift the first two message
+    // After testing, 6 context lengths are moderate
+    if (requestBody.messages.length > 6) {
+        requestBody.messages.splice(0, 2);
+    }
+
+    // Push user message to requestBody.messages array for context
+    requestBody.messages.push({role: 'user', content: userMessage})
+
     // Send HTTP GET request to API endpoint, and print result in response
     // Send to Gateway API DO NOT Sent to OpenAI API, Only Dev environment
     fetch(`https://api.openai.com/v1/chat/completions`, {
         method: 'POST', headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer sk-`
+            'Authorization': SK,
         }, body: JSON.stringify(requestBody)
     })
         .then(response => response.json())
@@ -53,21 +65,20 @@ function sendMessage() {
             resultDiv.appendChild(resultElement);
             resultDiv.appendChild(document.createElement('br'));
 
-            // TODO Fix context error
-            // requestBody.messages.push({role: 'user', content: userMessage})
-            // requestBody.messages.push(result.choices[0].message)
+            // Push assistant message to requestBody.messages array for context
+            requestBody.messages.push(result.choices[0].message)
         })
         .catch(error => console.error(error))
         .finally(() => {
             // Control loading display and send button display
-            loading.style.display = "none";
+            loadingBdr.style.display = "none";
             sendBtn.style.display = "block";
-            input.style.display = "block";
-            input.focus();
+            userIpt.style.display = "block";
+            userIpt.focus();
         });
 
     // Clear user input
-    input.value = '';
+    userIpt.value = '';
 }
 
 
