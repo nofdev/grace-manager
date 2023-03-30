@@ -17,7 +17,9 @@
 <div class="container">
     <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+            <svg class="bi me-2" width="40" height="32">
+                <use xlink:href="#bootstrap"></use>
+            </svg>
             <span class="fs-4"><img src="image-sample.png" alt="image-sample" style="max-width: 8%; max-height: 8%">
                 JB Technology</span>
         </a>
@@ -32,27 +34,32 @@
     </header>
 </div>
 
-<!-- Chat output-->
-<div class="chat-title"><h1>Chat demo</h1></div>
-<div class="chat-messages" id="result"></div>
+<!--main-->
+<div class="container">
+    <main>
+        <!-- Chat output-->
+        <div class="chat-title"><h1>Chat demo</h1></div>
+        <div class="chat-messages" id="result"></div>
 
-<!-- Loading spinner -->
-<div id="loading" class="spinner-border text-success" role="status">
-    <span class="visually-hidden">Loading...</span>
-</div>
+        <!-- Loading spinner -->
+        <div id="loading" class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
 
 
-<!-- Chat input-->
-<div class="chat-input">
-    <div class="input-group mb-3">
+        <!-- Chat input-->
+        <div class="chat-input">
+            <div class="input-group mb-3">
         <textarea type="text" class="form-control" id="input"
                   placeholder="Input your messages, press enter to send, press shift+enter to change new line."
                   aria-label="Recipient's username" aria-describedby="button-addon2"></textarea>
-    </div>
-    <button class="btn btn-outline-secondary" type="button" id="send">Send</button>
+            </div>
+            <button class="btn btn-outline-secondary" type="button" id="send">Send</button>
+        </div>
+        <!--Enable chat using type = module for key.js importing-->
+        <script src="chat.js" type="module"></script>
+    </main>
 </div>
-<!--Enable chat using type = module for key.js importing-->
-<script src="chat.js" type="module"></script>
 
 <!-- Footer -->
 <div class="container">
