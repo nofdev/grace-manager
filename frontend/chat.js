@@ -104,3 +104,31 @@ textarea.addEventListener('keydown', function (event) {
         this.selectionStart = this.selectionEnd = startPos + 1;
     }
 })
+
+// Format code content from API response
+function formatApiContent(content) {
+    let codeBlock = false;
+    let lines = content.split('\n');
+    let formattedContent = '';
+
+    for (let i = 0; i < lines.length; i++) {
+        let line = lines[i].trim();
+
+        if (line === '```') {
+            if (codeBlock) {
+                formattedContent += '</code>';
+            } else {
+                formattedContent += '<code>';
+            }
+            codeBlock = !codeBlock;
+        } else {
+            if (codeBlock) {
+                formattedContent += line + '\n';
+            } else {
+                formattedContent += '<p>' + line + '</p>';
+            }
+        }
+    }
+
+    return formattedContent;
+}
