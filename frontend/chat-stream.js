@@ -33,6 +33,7 @@ function sendMessage() {
 
     requestBody.messages.push({role: 'user', content: userMessage})
 
+    // Create a ReadableStream object that contains the request body as a string
     const stream = new ReadableStream({
         start(controller) {
             controller.enqueue(JSON.stringify(requestBody));
@@ -43,15 +44,18 @@ function sendMessage() {
     fetch(`https://api.jiasir.io:3000/chat`, {
         method: 'POST', headers: {
             'Content-Type': 'application/json',
-        }, body: stream
+        }, body: stream // Use fetch function with the body option set to the ReadableStream object
     })
+        // In the response callback, get the response body as a ReadableStream object
         .then(response => response.body)
         .then(body => {
+            // Create a ReadableStreamDefaultReader object to read the data, and concatenate the chunks into a string
             const reader = body.getReader();
             let result = '';
 
             function read() {
                 reader.read().then(({done, value}) => {
+                    // When the reading is complete, we display the result and update the requestBody object with the assistant's message
                     if (done) {
                         const resultElement = document.createElement('pre');
                         resultElement.textContent = result;
