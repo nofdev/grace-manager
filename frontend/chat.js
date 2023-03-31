@@ -105,6 +105,7 @@ textarea.addEventListener('keydown', function (event) {
     }
 })
 
+// TODO: format code block
 // Format code content from API response
 function formatApiContent(content) {
     let codeBlock = false;
