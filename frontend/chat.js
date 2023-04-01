@@ -2,8 +2,6 @@ const userIpt = document.getElementById('input');
 const sendBtn = document.getElementById('send');
 const resultDiv = document.getElementById('result');
 const loadingBdr = document.getElementById('loading');
-// import key for testing purpose only (not for production)
-// import {SK} from './key.js';
 
 // User input focus
 userIpt.focus();
@@ -51,7 +49,6 @@ function sendMessage() {
     fetch(`https://api.jiasir.io:3000/chat`, {
         method: 'POST', headers: {
             'Content-Type': 'application/json',
-            // 'Authorization': SK,
         }, body: JSON.stringify(requestBody)
     })
         .then(response => response.json())
