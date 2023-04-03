@@ -104,29 +104,37 @@ textarea.addEventListener('keydown', function (event) {
 
 // TODO: format code block
 // Format code content from API response
+/*
+This function takes in a string content and formats it as HTML.
+It looks for lines that begin and end with '```' to identify code blocks.
+Code blocks are wrapped in <code> tags, and all other lines are wrapped in <p> tags.
+@param {string} content - The string content to format.
+@returns {string} The formatted HTML content.
+*/
 function formatApiContent(content) {
-    let codeBlock = false;
-    let lines = content.split('\n');
-    let formattedContent = '';
-
+    let codeBlock = false; // boolean flag to track if we're currently in a code block or not
+    let lines = content.split('\n'); // split the content into an array of lines
+    let formattedContent = '';  // initialize an empty string to store the formatted HTML
+    // loop through each line of the content
     for (let i = 0; i < lines.length; i++) {
-        let line = lines[i].trim();
-
+        let line = lines[i].trim(); // remove any leading or trailing whitespace from the line
+        // if the line is a code block delimiter
         if (line === '```') {
             if (codeBlock) {
-                formattedContent += '</code>';
+                formattedContent += '</code>'; // if we're currently in a code block, close it
             } else {
-                formattedContent += '<code>';
+                formattedContent += '<code>'; // if we're not currently in a code block, open one
             }
-            codeBlock = !codeBlock;
+            codeBlock = !codeBlock; // toggle the codeBlock flag
         } else {
+            // if we're currently in a code block
             if (codeBlock) {
-                formattedContent += line + '\n';
+                formattedContent += line + '\n'; // add the line to the code block
             } else {
-                formattedContent += '<p>' + line + '</p>';
+                formattedContent += '<p>' + line + '</p>'; // wrap the line in a <p> tag
             }
         }
     }
 
-    return formattedContent;
+    return formattedContent; // return the formatted HTML content
 }
