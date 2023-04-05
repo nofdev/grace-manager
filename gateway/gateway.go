@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
+	"github.com/spf13/viper"
 	"io"
 	"log"
 	"net/http"
-	"os"
 )
 
 // RequestBody is the request body for the OpenAI API
@@ -33,11 +33,24 @@ type ResponseBody struct {
 	} `json:"choices"`
 }
 
+// getConfig returns the value of a config variable
+func getConfig(name string) string {
+	// The config file is in the same directory as the executable
+	viper.SetConfigFile("config.ini")
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(err)
+	}
+
+	// Get config value
+	return viper.GetString(name)
+}
+
 func main() {
 	// Handle the chat endpoint
 	http.HandleFunc("/chat", handleChat)
 
-	port := "3000"
+	port := getConfig("PORT")
 	// Create a server and listen on port 3000
 	server := &http.Server{
 		Addr:      ":" + port,
@@ -47,7 +60,7 @@ func main() {
 	// Start the server
 	log.Printf("Server listening on port %v", port)
 	// Environment variables, You can use a self-signed certificate for testing
-	log.Fatal(server.ListenAndServeTLS(os.Getenv("CERT_FILE"), os.Getenv("KEY_FILE")))
+	log.Fatal(server.ListenAndServeTLS(getConfig("SSL_CERT_FILE"), getConfig("SSL_KEY_FILE")))
 }
 
 // handleChat handles the chat endpoint
@@ -83,10 +96,10 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Add your OpenAI API key
-	apiKey := os.Getenv("OPENAI_API_KEY")
+	apiKey := getConfig("OPENAI_API_KEY")
 
 	// The OpenAI API
-	url := "https://api.openai.com/v1/chat/completions"
+	url := getConfig("OPENAI_API")
 
 	// Marshal the request body
 	reqBody, err := json.Marshal(requestBody)
