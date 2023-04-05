@@ -7,8 +7,10 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 )
 
+// RequestBody is the request body for the OpenAI API
 type RequestBody struct {
 	Model            string    `json:"model"`
 	Messages         []string  `json:"messages"`
@@ -24,6 +26,7 @@ type RequestBody struct {
 	User             string    `json:"user"`
 }
 
+// ResponseBody is the response body for the OpenAI API
 type ResponseBody struct {
 	Choices []struct {
 		Text string `json:"text"`
@@ -31,33 +34,46 @@ type ResponseBody struct {
 }
 
 func main() {
+	// Handle the chat endpoint
 	http.HandleFunc("/chat", handleChat)
 
 	port := "3000"
+	// Create a server and listen on port 3000
 	server := &http.Server{
 		Addr:      ":" + port,
 		TLSConfig: &tls.Config{},
 	}
 
+	// Start the server
 	log.Printf("Server listening on port %v", port)
-	log.Fatal(server.ListenAndServeTLS("YOUR_CERT.cert", "/root/cert/YOUR_KEY.key"))
+	// Environment variables, You can use a self-signed certificate for testing
+	log.Fatal(server.ListenAndServeTLS(os.Getenv("CERT_FILE"), os.Getenv("KEY_FILE")))
 }
 
+// handleChat handles the chat endpoint
+// This endpoint is used to send a request to the OpenAI API
+// and return the response to the client
+// The request and response body is the same as the OpenAI API
+// https://beta.openai.com/docs/api-reference/create-completion
 func handleChat(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
+	// Handle preflight requests
+	// https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request
 	if r.Method == "OPTIONS" {
 		w.WriteHeader(http.StatusOK)
 		return
 	}
 
+	// Only allow POST requests
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
 
+	// Decode the request body
 	var requestBody RequestBody
 	err := json.NewDecoder(r.Body).Decode(&requestBody)
 	if err != nil {
@@ -67,9 +83,12 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Add your OpenAI API key
-	apiKey := "YOUR_API_KEY_HERE"
+	apiKey := os.Getenv("OPENAI_API_KEY")
 
+	// The OpenAI API
 	url := "https://api.openai.com/v1/chat/completions"
+
+	// Marshal the request body
 	reqBody, err := json.Marshal(requestBody)
 	if err != nil {
 		log.Printf("Failed to marshal request body: %v", err)
@@ -77,6 +96,7 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Create a new HTTP request
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(reqBody))
 	if err != nil {
 		log.Printf("Failed to create HTTP request: %v", err)
@@ -84,9 +104,11 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Set the headers
 	req.Header.Set("Authorization", apiKey)
 	req.Header.Set("Content-Type", "application/json")
 
+	// Send the request
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
@@ -96,6 +118,7 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 	}
 	defer resp.Body.Close()
 
+	// Read the response body
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Printf("Failed to read HTTP response body: %v", err)
@@ -103,6 +126,7 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Unmarshal the response body
 	var responseBody ResponseBody
 	err = json.Unmarshal(respBody, &responseBody)
 
@@ -112,6 +136,7 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Marshal the response body
 	jsonResponse, err := json.Marshal(responseBody)
 	if err != nil {
 		log.Printf("Failed to marshal HTTP response: %v", err)
