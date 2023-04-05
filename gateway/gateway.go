@@ -144,6 +144,9 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Send the response to the client with status code 200 OK (success)
+	// and the response body from the OpenAI API as JSON
+	// https://beta.openai.com/docs/api-reference/create-completion
 	w.WriteHeader(http.StatusOK)
 	w.Write(jsonResponse)
 
