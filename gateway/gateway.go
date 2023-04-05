@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -116,10 +116,15 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			log.Printf("Failed to close HTTP response body: %v", err)
+		}
+	}(resp.Body)
 
 	// Read the response body
-	respBody, err := ioutil.ReadAll(resp.Body)
+	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Printf("Failed to read HTTP response body: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -148,6 +153,9 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 	// and the response body from the OpenAI API as JSON
 	// https://beta.openai.com/docs/api-reference/create-completion
 	w.WriteHeader(http.StatusOK)
-	w.Write(jsonResponse)
-
+	if _, err := w.Write(jsonResponse); err != nil {
+		log.Printf("Failed to write HTTP response: %v", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 }
