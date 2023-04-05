@@ -10,7 +10,10 @@ import (
 	"net/http"
 )
 
-// RequestBody is the request body for the OpenAI API
+/*
+RequestBody is the request body for the OpenAI API
+https://platform.openai.com/docs/api-reference/completions/create
+*/
 type RequestBody struct {
 	Model            string    `json:"model"`
 	Messages         []string  `json:"messages"`
@@ -26,11 +29,27 @@ type RequestBody struct {
 	User             string    `json:"user"`
 }
 
-// ResponseBody is the response body for the OpenAI API
+/*
+ResponseBody is the response body for the OpenAI API
+https://platform.openai.com/docs/api-reference/completions/create
+*/
 type ResponseBody struct {
+	Id      string `json:"id"`
+	Object  string `json:"object"`
+	Created int    `json:"created"`
 	Choices []struct {
-		Text string `json:"text"`
+		Index   int `json:"index"`
+		Message struct {
+			Role    string `json:"role"`
+			Content string `json:"content"`
+		} `json:"message"`
+		FinishReason string `json:"finish_reason"`
 	} `json:"choices"`
+	Usage struct {
+		PromptTokens     int `json:"prompt_tokens"`
+		CompletionTokens int `json:"completion_tokens"`
+		TotalTokens      int `json:"total_tokens"`
+	}
 }
 
 // getConfig returns the value of a config variable
@@ -67,7 +86,7 @@ func main() {
 // This endpoint is used to send a request to the OpenAI API
 // and return the response to the client
 // The request and response body is the same as the OpenAI API
-// https://beta.openai.com/docs/api-reference/create-completion
+// https://platform.openai.com/docs/api-reference/completions/create
 func handleChat(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
