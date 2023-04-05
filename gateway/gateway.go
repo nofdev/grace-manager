@@ -82,11 +82,13 @@ func main() {
 	log.Fatal(server.ListenAndServeTLS(getConfig("SSL_CERT_FILE"), getConfig("SSL_KEY_FILE")))
 }
 
-// handleChat handles the chat endpoint
-// This endpoint is used to send a request to the OpenAI API
-// and return the response to the client
-// The request and response body is the same as the OpenAI API
-// https://platform.openai.com/docs/api-reference/completions/create
+/*
+handleChat handles the chat endpoint
+This endpoint is used to send a request to the OpenAI API
+and return the response to the client
+The request and response body is the same as the OpenAI API
+https://platform.openai.com/docs/api-reference/completions/create
+*/
 func handleChat(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
