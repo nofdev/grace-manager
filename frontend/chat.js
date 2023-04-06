@@ -46,7 +46,7 @@ function sendMessage() {
 
     // Send HTTP GET request to API endpoint, and print result in response
     // Send to Gateway API DO NOT Sent to OpenAI API, Only Dev environment
-    fetch(`https://api.jiasir.io:3000/chat`, {
+    fetch(`https://api.sunsun.dev:3000/chat`, {
         method: 'POST', headers: {
             'Content-Type': 'application/json',
         }, body: JSON.stringify(requestBody)

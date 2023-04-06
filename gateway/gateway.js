@@ -12,9 +12,9 @@ import {SK} from './key.js';
 app.use(cors());
 app.use(express.json());
 
-const privateKey = fs.readFileSync('/root/cert/api.jiasir.io.key', 'utf8');
-const certificate = fs.readFileSync('/root/cert/api.jiasir.io.cert', 'utf8');
-const ca = fs.readFileSync('/root/cert/api.jiasir.io.fullchain.pem', 'utf8');
+const privateKey = fs.readFileSync('/root/cert/sunsun.dev.key', 'utf8');
+const certificate = fs.readFileSync('/root/cert/sunsun.dev.cer', 'utf8');
+const ca = fs.readFileSync('/root/cert/sunsun.dev.fullchain.cer', 'utf8');
 
 const credentials = {
     key: privateKey,
