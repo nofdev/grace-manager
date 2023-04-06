@@ -93,6 +93,7 @@ The request and response body is the same as the OpenAI API
 https://platform.openai.com/docs/api-reference/completions/create
 */
 func handleChat(w http.ResponseWriter, r *http.Request) {
+	// Set the gateway response headers for CORS
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -110,7 +111,7 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Decode the request body
+	// Decode the request body from client
 	var requestBody RequestBody
 	err := json.NewDecoder(r.Body).Decode(&requestBody)
 	if err != nil {
@@ -125,7 +126,7 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 	// The OpenAI API
 	url := getConfig("OPENAI_API")
 
-	// Marshal the request body
+	// Marshal the request body from client
 	reqBody, err := json.Marshal(requestBody)
 	if err != nil {
 		log.Printf("Failed to marshal request body: %v", err)
@@ -133,7 +134,7 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Create a new HTTP request
+	// Create a new HTTP request for gateway to send to the OpenAI API
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(reqBody))
 	if err != nil {
 		log.Printf("Failed to create HTTP request: %v", err)
@@ -141,11 +142,11 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Set the headers
+	// Set the request headers for gateway to send to the OpenAI API
 	req.Header.Set("Authorization", apiKey)
 	req.Header.Set("Content-Type", "application/json")
 
-	// Send the request
+	// Send the request from the gateway to the OpenAI API
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
@@ -153,6 +154,7 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	// Close the response body from the OpenAI API
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
@@ -160,7 +162,7 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 		}
 	}(resp.Body)
 
-	// Read the response body
+	// Read the response body from the OpenAI API
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Printf("Failed to read HTTP response body: %v", err)
@@ -168,7 +170,7 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Unmarshal the response body
+	// Unmarshal the response body from the OpenAI API
 	var responseBody ResponseBody
 	err = json.Unmarshal(respBody, &responseBody)
 
@@ -178,7 +180,7 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Marshal the response body
+	// Marshal the response body from the OpenAI API
 	jsonResponse, err := json.Marshal(responseBody)
 	if err != nil {
 		log.Printf("Failed to marshal HTTP response: %v", err)
