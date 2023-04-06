@@ -9,23 +9,33 @@ const port = process.env.PORT || 3000;
 
 import {SK} from './key.js';
 
+// CORS middleware to allow requests from any origin
 app.use(cors());
+// Parse JSON bodies (as sent by API clients)
 app.use(express.json());
 
+// Read the certificate and key files
 const privateKey = fs.readFileSync('/root/cert/sunsun.dev.key', 'utf8');
 const certificate = fs.readFileSync('/root/cert/sunsun.dev.cer', 'utf8');
 const ca = fs.readFileSync('/root/cert/sunsun.dev.fullchain.cer', 'utf8');
 
+// Create the credentials object
 const credentials = {
     key: privateKey,
     cert: certificate,
     ca: ca
 };
 
+// Create the HTTPS server using the credentials and the express app as the request handler function (app)
 const httpsServer = https.createServer(credentials, app);
 
+// Route to handle chat requests
+// from the frontend app and forward them
+// to OpenAI API server using axios library and return the response
+// to the frontend app using express response object (res)
 app.post('/chat', async (req, res) => {
     try {
+        // Extract the data from the request body
         const {
             model,
             messages,
@@ -41,6 +51,9 @@ app.post('/chat', async (req, res) => {
             user
         } = req.body;
 
+        // Send a POST request to OpenAI API server
+        // and wait for the response
+        // and return the response to the frontend app
         const response = await axios.post('https://api.openai.com/v1/chat/completions', {
             model,
             messages,
@@ -61,6 +74,8 @@ app.post('/chat', async (req, res) => {
             }
         });
 
+        // Send the response back to the frontend app
+        // using express response object (res)
         res.send(response.data);
     } catch (error) {
         console.error(error);
@@ -68,6 +83,7 @@ app.post('/chat', async (req, res) => {
     }
 });
 
+// Start the HTTPS server on the specified port
 httpsServer.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
