@@ -51,14 +51,20 @@ function sendMessage() {
             'Content-Type': 'application/json',
         }, body: JSON.stringify(requestBody)
     })
+        // In the response callback, get the response body as a ReadableStream object
         .then(response => response.json())
+        // Get the response body as a JSON object
+        // If the response is not in JSON format, the result will be null
         .then(result => {
             if (!result) {
                 throw new Error('Invalid response format')
             }
             // This is the response from OpenAI API
+            // Create a resultElement to display the assistant message
             const resultElement = document.createElement('pre');
+            // The assistant message of OpenAI API response
             resultElement.textContent = result.choices[0].message.content;
+            // Append assistant message to resultDiv
             resultDiv.appendChild(resultElement);
             resultDiv.appendChild(document.createElement('br'));
 
