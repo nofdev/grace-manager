@@ -26,7 +26,20 @@ const httpsServer = https.createServer(credentials, app);
 
 app.post('/chat', async (req, res) => {
     try {
-        const { model, messages, temperature, top_p, n, stream, stop, max_tokens, presence_penalty, frequency_penalty, logit_bias, user } = req.body;
+        const {
+            model,
+            messages,
+            temperature,
+            top_p,
+            n,
+            stream,
+            stop,
+            max_tokens,
+            presence_penalty,
+            frequency_penalty,
+            logit_bias,
+            user
+        } = req.body;
 
         const response = await axios.post('https://api.openai.com/v1/chat/completions', {
             model,
