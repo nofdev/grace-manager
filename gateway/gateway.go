@@ -15,8 +15,11 @@ RequestBody is the request body for the OpenAI API
 https://platform.openai.com/docs/api-reference/completions/create
 */
 type RequestBody struct {
-	Model            string    `json:"model"`
-	Messages         []string  `json:"messages"`
+	Model    string `json:"model"`
+	Messages []struct {
+		Role    string `json:"role"`
+		Content string `json:"content"`
+	} `json:"messages"`
 	Temperature      float64   `json:"temperature"`
 	TopP             float64   `json:"top_p"`
 	N                int       `json:"n"`
