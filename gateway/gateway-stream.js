@@ -1,3 +1,6 @@
+// This is the backend code for the gateway. It is a Node.js server that proxies requests to OpenAI API.
+// This snippet is for development purpose. It is not used in production.
+
 const https = require('https');
 const fs = require('fs');
 const express = require('express');
