@@ -33,7 +33,7 @@ const httpsServer = https.createServer(credentials, app);
 // from the frontend app and forward them
 // to OpenAI API server using axios library and return the response
 // to the frontend app using express response object (res)
-app.post('/chat', async (req, res) => {
+app.post('/v1/chat/completions', async (req, res) => {
     try {
         // Extract the data from the request body
         const {
