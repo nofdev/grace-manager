@@ -12,7 +12,7 @@ const qs = require('querystring');
 const app = express();
 const port = process.env.PORT || 3000;
 
-import {SK} from './key.js';
+const SK = fs.readFileSync('key/key.js', 'utf8');
 
 app.use(cors());
 app.use(express.json());
