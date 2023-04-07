@@ -144,3 +144,4 @@ dmypy.json
 /cert/
 /gateway/cert/
 /gateway/keys/
+/gateway/key/
