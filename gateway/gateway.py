@@ -1,3 +1,7 @@
+# Gateway server for OpenAI API
+# This server is used to make requests to OpenAI API server from the frontend app
+# And now only supports chat requests
+
 import os
 import ssl
 import requests
