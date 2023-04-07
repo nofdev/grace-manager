@@ -7,7 +7,8 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 
-import {SK} from './key.js';
+// Read key.js file
+const SK = fs.readFileSync('key/key.js', 'utf8');
 
 // CORS middleware to allow requests from any origin
 app.use(cors());
@@ -15,9 +16,9 @@ app.use(cors());
 app.use(express.json());
 
 // Read the certificate and key files
-const privateKey = fs.readFileSync('/root/cert/sunsun.dev.key', 'utf8');
-const certificate = fs.readFileSync('/root/cert/sunsun.dev.cer', 'utf8');
-const ca = fs.readFileSync('/root/cert/sunsun.dev.fullchain.cer', 'utf8');
+const privateKey = fs.readFileSync('cert/sunsun.dev.key', 'utf8');
+const certificate = fs.readFileSync('cert/sunsun.dev.cer', 'utf8');
+const ca = fs.readFileSync('cert/sunsun.dev.fullchain.cer', 'utf8');
 
 // Create the credentials object
 const credentials = {
