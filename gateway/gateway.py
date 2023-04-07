@@ -6,17 +6,22 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
-# Allow CORS requests
+# Allow CORS requests, which are required for the frontend app to be able to
 CORS(app)
 
-# Read the certificate and key files
-with open('/root/cert/sunsun.dev.cer') as f:
-    cert_file = f.read()
-with open('/root/cert/sunsun.dev.key') as f:
-    key_file = f.read()
+# Read OPENAI_API_KEY from file
+OPENAI_API_KEY = open('./keys/openai_api_key.txt').read()
 
+# Certificate and key files for ssl context
+CERT_FILE = './cert/sunsun.dev.cer'
+KEY_FILE = './cert/sunsun.dev.key'
+
+# Server port
+PORT = 3000
+
+# Create ssl context for HTTPS server using the certificate and key files above
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-context.load_cert_chain(certfile=cert_file, keyfile=key_file)
+context.load_cert_chain(certfile=CERT_FILE, keyfile=KEY_FILE)
 
 
 # Route to handle chat requests
@@ -32,16 +37,16 @@ def chat():
     :return: Response from OpenAI API server
     """
     try:
-        # Get the request body from the client
+        # Get the request body from the client request object (flask)
         request_body = request.json
 
-        # Send the request to OpenAI API
+        # Send the request to OpenAI API server using requests library and get the response object
         response = requests.post('https://api.openai.com/v1/chat/completions', headers={
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer YOUR_OPENAI_API_KEY'
+            'Authorization': 'Bearer ' + OPENAI_API_KEY
         }, json=request_body)
 
-        # Return the response from OpenAI API to the client
+        # Return the response from OpenAI API to the client using flask response object (jsonify)
         return jsonify(response.json())
 
     except Exception as e:
@@ -51,4 +56,4 @@ def chat():
 
 # Start the HTTPS server on the specified port
 if __name__ == '__main__':
-    app.run(ssl_context=context, port=int(os.environ.get('PORT', 3000)))
+    app.run(ssl_context=context, port=int(os.environ.get('PORT', PORT)))
