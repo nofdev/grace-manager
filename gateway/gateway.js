@@ -71,7 +71,8 @@ app.post('/v1/chat/completions', async (req, res) => {
         }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': SK // API key
+                'Authorization': SK, // API key
+                'Transfer-Encoding': 'chunked'
             }
         });
 

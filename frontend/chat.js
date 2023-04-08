@@ -49,6 +49,7 @@ function sendMessage() {
     fetch(`https://api.sunsun.dev:3000/v1/chat/completions`, {
         method: 'POST', headers: {
             'Content-Type': 'application/json',
+            'Transfer-Encoding': 'chunked'
         }, body: JSON.stringify(requestBody)
     })
         // In the response callback, get the response body as a ReadableStream object
