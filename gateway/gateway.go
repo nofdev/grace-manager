@@ -70,7 +70,7 @@ func getConfig(name string) string {
 
 func main() {
 	// Handle the chat endpoint
-	http.HandleFunc("/chat", handleChat)
+	http.HandleFunc("/v1/chat/completions", handleChat)
 
 	port := getConfig("PORT")
 	// Create a server and listen on port 3000
