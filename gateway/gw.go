@@ -4,7 +4,6 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"io"
 	"log"
@@ -25,14 +24,20 @@ func main() {
 
 	// Define handler function
 	handler := func(w http.ResponseWriter, r *http.Request) {
-		// Create a buffer to read the request body into it from the client request
-		bodyBuffer := new(bytes.Buffer)
-		_, err := io.Copy(bodyBuffer, r.Body)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+		// Set CORS headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
 			return
 		}
-		req, err := http.NewRequest(r.Method, fmt.Sprintf("https://api.openai.com/v1/%s", r.URL.Path[1:]), bodyBuffer)
+
+		// Send OpenAI API Request、
+		fmt.Println(r.URL.Path[1:])
+		url := fmt.Sprintf("https://api.openai.com/%s", r.URL.Path[1:])
+		req, err := http.NewRequest(r.Method, url, r.Body)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -40,33 +45,38 @@ func main() {
 		req.Header.Set("Content-Type", r.Header.Get("Content-Type"))
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", apiKey))
 
-		// Send OpenAI API Request
 		resp, err := client.Do(req)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		defer resp.Body.Close()
+		// Make sure the response body is always closed before the function exits.
+		// If an error occurs while closing the response body, it will be logged instead of crashing the program.
+		defer func() {
+			if err := resp.Body.Close(); err != nil {
+				log.Printf("Failed to close HTTP response body: %v", err)
+			}
+		}()
 
-		// Write response to client form OpenAI API
+		// Write response to client form OpenAI API using stream
 		w.Header().Set("Content-Type", resp.Header.Get("Content-Type"))
 		w.WriteHeader(resp.StatusCode)
-		if _, err := io.Copy(w, resp.Body); err != nil {
+		_, err = io.Copy(w, resp.Body)
+		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
 
 	// Create HTTP server
-	http.HandleFunc("/", handler)
+	server := &http.Server{
+		Addr:    ":8080",
+		Handler: http.HandlerFunc(handler),
+	}
 
 	// Start HTTP server
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-	log.Printf("Starting server on port %s", port)
-	if err := http.ListenAndServe(fmt.Sprintf(":%s", port), nil); err != nil {
+	log.Printf("Starting server on port %s", server.Addr)
+	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatal(err)
 	}
 }
