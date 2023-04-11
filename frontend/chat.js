@@ -1,3 +1,5 @@
+// import * as https from "https";
+
 const userIpt = document.getElementById('input');
 const sendBtn = document.getElementById('send');
 const resultDiv = document.getElementById('result');
@@ -14,9 +16,20 @@ let requestBody = {
     model: 'gpt-3.5-turbo',
     messages: [],
     temperature: 0.8,
+    stream: true
 }
 
+let responseStream;
+let abortController = new AbortController();
+
+
 function sendMessage() {
+
+    if (abortController) {
+        abortController.abort();
+    }
+    abortController = new AbortController
+
     // if input.value is empty, return
     if (userIpt.value === '') return;
 
@@ -46,31 +59,55 @@ function sendMessage() {
 
     // Send HTTP GET request to API endpoint, and print result in response
     // Send to Gateway API DO NOT Sent to OpenAI API, Only Dev environment
-    fetch(`https://api.sunsun.dev:3000/v1/chat/completions`, {
-        method: 'POST', headers: {
-            'Content-Type': 'application/json',
-            'Transfer-Encoding': 'chunked'
-        }, body: JSON.stringify(requestBody)
+    fetch(`http://172.104.116.220:8080/v1/chat/completions`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        // Send request body to Gateway API
+        body: JSON.stringify(requestBody),
+        signal: abortController.signal, // pass the signal to the fetch request
     })
-        // In the response callback, get the response body as a ReadableStream object
-        .then(response => response.json())
-        // Get the response body as a JSON object
-        // If the response is not in JSON format, the result will be null
-        .then(result => {
-            if (!result) {
-                throw new Error('Invalid response format')
+        // Get response from Gateway API
+        .then((response) => {
+            // Check if response is ok
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
             }
-            // This is the response from OpenAI API
-            // Create a resultElement to display the assistant message
-            const resultElement = document.createElement('pre');
-            // The assistant message of OpenAI API response
-            resultElement.textContent = result.choices[0].message.content;
-            // Append assistant message to resultDiv
-            resultDiv.appendChild(resultElement);
-            resultDiv.appendChild(document.createElement('br'));
+            // Create a ReadableStream object from the response body
+            const reader = response.body.getReader();
+            // Use TextDecoder to decode the stream into a string
+            const decoder = new TextDecoder();
+            let result = "";
+            // Read the stream
+            return reader.read().then(function readStream({ done, value }) {
+                // If the stream is done, return the result
+                if (done) {
+                    // All chunks have been read, parse the JSON result
+                    try {
+                        const jsonResult = JSON.parse(result);
+                        // This is the response from OpenAI API
+                        // Create a resultElement to display the assistant message
+                        const resultElement = document.createElement("pre");
+                        // The assistant message of OpenAI API response
+                        resultElement.textContent = jsonResult.choices[0].message.content;
+                        // Append assistant message to resultDiv
+                        resultDiv.appendChild(resultElement);
+                        resultDiv.appendChild(document.createElement("br"));
 
-            // Push assistant message to requestBody.messages array for context
-            requestBody.messages.push(result.choices[0].message)
+                        // Push assistant message to requestBody.messages array for context
+                        requestBody.messages.push(jsonResult.choices[0].message);
+
+                        return jsonResult;
+                    } catch (error) {
+                        console.error("parse json error: ", error);
+                    }
+                }
+                // Convert the current chunk to a string and append it to the result variable
+                result += decoder.decode(value, { stream: !done });
+                // Read the next chunk
+                return reader.read().then(readStream);
+            });
         })
         .catch(error => console.error(error))
         .finally(() => {
@@ -108,40 +145,3 @@ textarea.addEventListener('keydown', function (event) {
         this.selectionStart = this.selectionEnd = startPos + 1;
     }
 })
-
-// TODO: format code block
-// Format code content from API response
-/*
-This function takes in a string content and formats it as HTML.
-It looks for lines that begin and end with '```' to identify code blocks.
-Code blocks are wrapped in <code> tags, and all other lines are wrapped in <p> tags.
-@param {string} content - The string content to format.
-@returns {string} The formatted HTML content.
-*/
-function formatApiContent(content) {
-    let codeBlock = false; // boolean flag to track if we're currently in a code block or not
-    let lines = content.split('\n'); // split the content into an array of lines
-    let formattedContent = '';  // initialize an empty string to store the formatted HTML
-    // loop through each line of the content
-    for (let i = 0; i < lines.length; i++) {
-        let line = lines[i].trim(); // remove any leading or trailing whitespace from the line
-        // if the line is a code block delimiter
-        if (line === '```') {
-            if (codeBlock) {
-                formattedContent += '</code>'; // if we're currently in a code block, close it
-            } else {
-                formattedContent += '<code>'; // if we're not currently in a code block, open one
-            }
-            codeBlock = !codeBlock; // toggle the codeBlock flag
-        } else {
-            // if we're currently in a code block
-            if (codeBlock) {
-                formattedContent += line + '\n'; // add the line to the code block
-            } else {
-                formattedContent += '<p>' + line + '</p>'; // wrap the line in a <p> tag
-            }
-        }
-    }
-
-    return formattedContent; // return the formatted HTML content
-}
