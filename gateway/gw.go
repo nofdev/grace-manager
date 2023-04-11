@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -18,6 +19,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	apiKey = []byte(strings.ReplaceAll(string(apiKey), "\n", ""))
 
 	// Create HTTP client
 	client := &http.Client{}
@@ -34,8 +36,7 @@ func main() {
 			return
 		}
 
-		// Send OpenAI API Request、
-		fmt.Println(r.URL.Path[1:])
+		// Send OpenAI API Request
 		url := fmt.Sprintf("https://api.openai.com/%s", r.URL.Path[1:])
 		req, err := http.NewRequest(r.Method, url, r.Body)
 		if err != nil {
