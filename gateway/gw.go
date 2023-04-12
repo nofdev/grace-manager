@@ -64,7 +64,13 @@ func main() {
 		w.WriteHeader(resp.StatusCode)
 
 		// Write response to client form OpenAI API using stream
-		defer resp.Body.Close()
+		defer func(Body io.ReadCloser) {
+			err := Body.Close()
+			if err != nil {
+				log.Fatal(err)
+			}
+		}(resp.Body)
+
 		buf := make([]byte, 1024)
 		for {
 			n, err := resp.Body.Read(buf)
