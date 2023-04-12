@@ -59,13 +59,27 @@ func main() {
 			}
 		}()
 
-		// Write response to client form OpenAI API using stream
-		w.Header().Set("Content-Type", resp.Header.Get("Content-Type"))
+		// Set response headers
+		w.Header().Set("Transfer-Encoding", "chunked")
 		w.WriteHeader(resp.StatusCode)
-		_, err = io.Copy(w, resp.Body)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
+
+		// Write response to client form OpenAI API using stream
+		defer resp.Body.Close()
+		buf := make([]byte, 1024)
+		for {
+			n, err := resp.Body.Read(buf)
+			if n > 0 {
+				if _, err := w.Write(buf[:n]); err != nil {
+					return
+				}
+				w.(http.Flusher).Flush()
+			}
+			if err != nil {
+				if err != io.EOF {
+					http.Error(w, err.Error(), http.StatusInternalServerError)
+				}
+				break
+			}
 		}
 	}
 
