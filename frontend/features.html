@@ -7,33 +7,15 @@
     <link rel="stylesheet" href="style.css">
     <link href="./bootstrap/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="dark.js"></script>
 
     <title>SunSun</title>
 </head>
 <body>
 
-<!-- Header -->
-<div class="container">
-    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-            <svg class="bi me-2" width="40" height="32">
-                <use xlink:href="#bootstrap"></use>
-            </svg>
-            <span class="fs-4"><img src="image-sample.png" alt="image-sample" style="max-width: 8%; max-height: 8%">
-                SunSun</span>
-        </a>
-
-        <ul class="nav nav-pills">
-            <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
-            <li class="nav-item"><a href="features.html" class="nav-link">Features</a></li>
-            <li class="nav-item"><a href="pricing.html" class="nav-link">Pricing</a></li>
-            <li class="nav-item"><a href="https://github.com/nofdev/grace-manager/issues" class="nav-link">FAQs</a></li>
-            <li class="nav-item"><a href="https://github.com/nofdev/grace-manager/blob/main/README.md" class="nav-link">About</a></li>
-        </ul>
-    </header>
-</div>
-
+<!-- header -->
+<div id="header"></div>
 <!--main-->
 <main>
     <div class="container px-4 py-5" id="icon-grid">
@@ -76,59 +58,56 @@
                     <p>Better compatibility with Web and mobile.</p>
                 </div>
             </div>
-<!--            <div class="col d-flex align-items-start">-->
-<!--                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">-->
-<!--                    <use xlink:href="#speedometer2"></use>-->
-<!--                </svg>-->
-<!--                <div>-->
-<!--                    <h3 class="fw-bold mb-0 fs-4">Featured title</h3>-->
-<!--                    <p>Paragraph of text beneath the heading to explain the heading.</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col d-flex align-items-start">-->
-<!--                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">-->
-<!--                    <use xlink:href="#toggles2"></use>-->
-<!--                </svg>-->
-<!--                <div>-->
-<!--                    <h3 class="fw-bold mb-0 fs-4">Featured title</h3>-->
-<!--                    <p>Paragraph of text beneath the heading to explain the heading.</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col d-flex align-items-start">-->
-<!--                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">-->
-<!--                    <use xlink:href="#geo-fill"></use>-->
-<!--                </svg>-->
-<!--                <div>-->
-<!--                    <h3 class="fw-bold mb-0 fs-4">Featured title</h3>-->
-<!--                    <p>Paragraph of text beneath the heading to explain the heading.</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col d-flex align-items-start">-->
-<!--                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">-->
-<!--                    <use xlink:href="#tools"></use>-->
-<!--                </svg>-->
-<!--                <div>-->
-<!--                    <h3 class="fw-bold mb-0 fs-4">Featured title</h3>-->
-<!--                    <p>Paragraph of text beneath the heading to explain the heading.</p>-->
-<!--                </div>-->
-<!--            </div>-->
+            <!--            <div class="col d-flex align-items-start">-->
+            <!--                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">-->
+            <!--                    <use xlink:href="#speedometer2"></use>-->
+            <!--                </svg>-->
+            <!--                <div>-->
+            <!--                    <h3 class="fw-bold mb-0 fs-4">Featured title</h3>-->
+            <!--                    <p>Paragraph of text beneath the heading to explain the heading.</p>-->
+            <!--                </div>-->
+            <!--            </div>-->
+            <!--            <div class="col d-flex align-items-start">-->
+            <!--                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">-->
+            <!--                    <use xlink:href="#toggles2"></use>-->
+            <!--                </svg>-->
+            <!--                <div>-->
+            <!--                    <h3 class="fw-bold mb-0 fs-4">Featured title</h3>-->
+            <!--                    <p>Paragraph of text beneath the heading to explain the heading.</p>-->
+            <!--                </div>-->
+            <!--            </div>-->
+            <!--            <div class="col d-flex align-items-start">-->
+            <!--                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">-->
+            <!--                    <use xlink:href="#geo-fill"></use>-->
+            <!--                </svg>-->
+            <!--                <div>-->
+            <!--                    <h3 class="fw-bold mb-0 fs-4">Featured title</h3>-->
+            <!--                    <p>Paragraph of text beneath the heading to explain the heading.</p>-->
+            <!--                </div>-->
+            <!--            </div>-->
+            <!--            <div class="col d-flex align-items-start">-->
+            <!--                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">-->
+            <!--                    <use xlink:href="#tools"></use>-->
+            <!--                </svg>-->
+            <!--                <div>-->
+            <!--                    <h3 class="fw-bold mb-0 fs-4">Featured title</h3>-->
+            <!--                    <p>Paragraph of text beneath the heading to explain the heading.</p>-->
+            <!--                </div>-->
+            <!--            </div>-->
         </div>
     </div>
 </main>
+<!-- footer -->
+<div id="footer"></div>
 
-<!-- Footer -->
-<div class="container">
-    <footer class="py-3 my-4">
-        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-            <li class="nav-item"><a href="/" class="nav-link px-2 text-body-secondary">Home</a></li>
-            <li class="nav-item"><a href="features.html" class="nav-link px-2 text-body-secondary">Features</a></li>
-            <li class="nav-item"><a href="pricing.html" class="nav-link px-2 text-body-secondary">Pricing</a></li>
-            <li class="nav-item"><a href="https://github.com/nofdev/grace-manager/issues" class="nav-link px-2 text-body-secondary">FAQs</a></li>
-            <li class="nav-item"><a href="https://github.com/nofdev/grace-manager/blob/main/README.md" class="nav-link px-2 text-body-secondary">About</a></li>
-        </ul>
-        <p class="text-center text-body-secondary">© 2023 SunSun</p>
-    </footer>
-</div>
+<script>
+    $(function () {
+        $("#header").load("header.html");
+        $("#main").load("main.html");
+        $("#footer").load("footer.html");
+    });
+</script>
+
 
 <!-- socket.io -->
 <script src="./socketio/socket.io.min.js"></script>

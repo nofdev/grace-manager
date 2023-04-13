@@ -13,21 +13,33 @@
     <title>SunSun</title>
 </head>
 <body>
-    <!-- header -->
-    <div id="header"></div>
-    <!-- main -->
-    <div id="main"></div>
-    <!-- footer -->
-    <div id="footer"></div>
 
-    <script>
-        $(function () {
-            $("#header").load("header.html");
-            $("#main").load("main.html");
-            $("#footer").load("footer.html");
-        });
-    </script>
+<!--main-->
+<div class="container">
+    <main>
+        <!-- Chat output-->
+        <div class="chat-title"><h1>Chat</h1></div>
+        <div class="chat-messages" id="result"></div>
 
+        <!-- Loading spinner -->
+        <div id="loading" class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+
+
+        <!-- Chat input-->
+        <div class="chat-input">
+            <div class="input-group mb-3">
+        <textarea type="text" class="form-control" id="input"
+                  placeholder="Input your messages, press enter to send, press shift+enter to change new line."
+                  aria-label="Recipient's username" aria-describedby="button-addon2"></textarea>
+            </div>
+            <button class="btn btn-outline-secondary" type="button" id="send">Send</button>
+        </div>
+        <!--Enable chat using type = module for key.js importing-->
+        <script src="chat.js" type="module"></script>
+    </main>
+</div>
 
 <!-- socket.io -->
 <script src="./socketio/socket.io.min.js"></script>
